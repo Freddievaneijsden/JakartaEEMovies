@@ -1,6 +1,7 @@
 package example.com;
 
 import example.com.dto.MovieResponse;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.ws.rs.GET;
@@ -11,7 +12,6 @@ import lombok.extern.java.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 
 //Klass som svarar på frågor från webbapplikationen, dvs vill komma åt resursen
@@ -19,6 +19,14 @@ import java.util.logging.Logger;
 @Path("movies")
 @Log
 public class MovieResource {
+
+    //Alla metoder mot movies i denna klass
+    private Repository repository;
+
+    @Inject
+    public MovieResource (Repository repository) {
+        this.repository = repository;
+    }
 
 //    private static final Logger logger = Logger.getLogger(MovieResource.class.getName());
 
