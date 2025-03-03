@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 @Entity
-@Table (name = "Movie", schema = "demo")
 public class Movie {
 
     @Id
