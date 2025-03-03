@@ -7,6 +7,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import lombok.extern.java.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +17,10 @@ import java.util.logging.Logger;
 //Klass som svarar på frågor från webbapplikationen, dvs vill komma åt resursen
 //Heter controller i Spring boot, MVC
 @Path("movies")
+@Log
 public class MovieResource {
 
-    private static final Logger logger = Logger.getLogger(MovieResource.class.getName());
+//    private static final Logger logger = Logger.getLogger(MovieResource.class.getName());
 
     @PersistenceContext
     private EntityManager entityManager;
