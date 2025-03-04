@@ -1,29 +1,21 @@
 package example.com.dto;
 
+import example.com.entity.Movie;
+import jakarta.validation.constraints.NotBlank;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 
-public class MovieResponse implements Serializable {
-    private String title;
-    private int playTime;
-
-    public MovieResponse(String title, int length) {
-        this.title = title;
-        this.playTime = length;
+/**
+ * DTO for {@link example.com.entity.Movie}
+ */
+public record MovieResponse(Long movieId, @NotBlank(message = "Movie title required") String movieTitle,
+                            BigDecimal moviePrice, String movieGenre) implements Serializable {
+    public static MovieResponse of (Movie movie) {
+        return new MovieResponse(movie.getMovieId(), movie.getMovieTitle(), movie.getMoviePrice(), movie.getMovieGenre());
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getPlayTime() {
-        return playTime;
-    }
-
-    public void setPlayTime(int playTime) {
-        this.playTime = playTime;
+    public MovieResponse (Movie movie) {
+       this(movie.getMovieId(), movie.getMovieTitle(), movie.getMoviePrice(), movie.getMovieGenre());
     }
 }
