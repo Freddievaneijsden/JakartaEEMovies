@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import lombok.extern.java.Log;
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class MovieResource {
         this.repository = repository;
     }
 
+    public MovieResource () {}
+
 //    private static final Logger logger = Logger.getLogger(MovieResource.class.getName());
 
     @PersistenceContext
@@ -45,8 +48,36 @@ public class MovieResource {
         return repository.findById(id).orElseThrow(
                 () -> new NotFoundException("Movie not found")
         );
-
     }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createNewMovie(Movie movie) {
+        var newMovie = repository.save(movie);
+        return Response
+                .status(Response.Status.CREATED)
+                .header("Location", "/api/movies/" + newMovie.getMovieId())
+                .build();
+    }
+
+    @PUT
+    @Path("{id}") //Kopplar id med variabel
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateMovie (Movie movie, @PathParam("id") Long id) {
+        Movie existingMovie = repository.findById(id).orElseThrow(
+                () -> new NotFoundException("Movie not found")
+        );
+
+        existingMovie.setMovieTitle(movie.getMovieTitle());
+        existingMovie.setMovieGenre(movie.getMovieGenre());
+        existingMovie.setMoviePrice(movie.getMoviePrice());
+
+        repository.save(existingMovie);
+
+        return Response.ok(existingMovie).build();
+    }
+
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
