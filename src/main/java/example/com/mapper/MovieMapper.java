@@ -11,6 +11,7 @@ public class MovieMapper {
     }
 
     public static Movie map(CreateMovie movie) {
+        if (movie == null) return null;
         Movie newMovie = new Movie();
         newMovie.setMovieTitle(movie.title());
         newMovie.setMoviePrice(movie.price());

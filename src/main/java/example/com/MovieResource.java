@@ -2,6 +2,7 @@ package example.com;
 
 import example.com.dto.CreateMovie;
 import example.com.dto.MovieResponse;
+import example.com.dto.UpdateMovie;
 import example.com.entity.Movie;
 import example.com.mapper.MovieMapper;
 import jakarta.inject.Inject;
@@ -63,7 +64,7 @@ public class MovieResource {
                     .entity("Book cannot be null").build();
         }
         Movie newMovie = MovieMapper.map(movie);
-        newMovie = repository.save(newMovie);
+        newMovie = repository.insert(newMovie);
 
         return Response
                 .status(Response.Status.CREATED)
@@ -74,18 +75,34 @@ public class MovieResource {
     @PUT
     @Path("{id}") //Kopplar id med variabel
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateMovie(Movie movie, @PathParam("id") Long id) {
-        Movie existingMovie = repository.findById(id).orElseThrow(
+    public Response updateMovie(UpdateMovie movie, @PathParam("id") Long id) {
+        var oldMovie = repository.findById(id).orElseThrow(
                 () -> new NotFoundException("Movie not found")
         );
+        oldMovie.setMovieTitle(movie.title());
+        oldMovie.setMoviePrice(movie.price());
+        oldMovie.setMovieGenre(movie.genre());
+        repository.update(oldMovie);
 
-        existingMovie.setMovieTitle(movie.getMovieTitle());
-        existingMovie.setMovieGenre(movie.getMovieGenre());
-        existingMovie.setMoviePrice(movie.getMoviePrice());
+        return Response.noContent().build();
+    }
 
-        repository.save(existingMovie);
+    @PATCH
+    @Path("{id}") //Kopplar id med variabel
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateMovieFieldByField(UpdateMovie movie, @PathParam("id") Long id) {
+        var oldMovie = repository.findById(id).orElseThrow(
+                () -> new NotFoundException("Movie not found")
+        );
+        if (movie.title() != null) oldMovie.setMovieTitle(movie.title());
+        if (movie.price() != null) oldMovie.setMoviePrice(movie.price());
+        if (movie.genre() != null) oldMovie.setMovieGenre(movie.genre());
+        oldMovie.setMovieTitle(movie.title());
+        oldMovie.setMoviePrice(movie.price());
+        oldMovie.setMovieGenre(movie.genre());
+        repository.update(oldMovie);
 
-        return Response.ok(existingMovie).build();
+        return Response.noContent().build();
     }
 
 
