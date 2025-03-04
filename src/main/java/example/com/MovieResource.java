@@ -1,12 +1,11 @@
 package example.com;
 
 import example.com.dto.MovieResponse;
+import example.com.entity.Movie;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import lombok.extern.java.Log;
 
@@ -21,10 +20,10 @@ import java.util.List;
 public class MovieResource {
 
     //Alla metoder mot movies i denna klass
-    private Repository repository;
+    private MovieRepository repository;
 
     @Inject
-    public MovieResource (Repository repository) {
+    public MovieResource (MovieRepository repository) {
         this.repository = repository;
     }
 
@@ -32,6 +31,22 @@ public class MovieResource {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Movie> getMovies (){
+        return repository.findAll().toList();
+    }
+
+    @GET
+    @Path("{id}") //Kopplar id med variabel
+    @Produces(MediaType.APPLICATION_JSON)
+    public Movie getOneMovie (@PathParam("id") Long id) {
+        return repository.findById(id).orElseThrow(
+                () -> new NotFoundException("Movie not found")
+        );
+
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

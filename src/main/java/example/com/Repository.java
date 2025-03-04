@@ -11,6 +11,9 @@ public class Repository {
    @PersistenceContext
    private EntityManager entityManager;
 
-   public Repository () {}
+   public Repository () {
+
+
+   }
 }
 
