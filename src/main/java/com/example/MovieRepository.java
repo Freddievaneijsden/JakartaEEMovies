@@ -1,6 +1,6 @@
-package example.com;
+package com.example;
 
-import example.com.entity.Movie;
+import com.example.entity.Movie;
 import jakarta.data.repository.CrudRepository;
 import jakarta.data.repository.Repository;
 

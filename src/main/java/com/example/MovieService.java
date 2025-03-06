@@ -1,4 +1,4 @@
-package example.com;
+package com.example;
 
 public class MovieService {
 }

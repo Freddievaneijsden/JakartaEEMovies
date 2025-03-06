@@ -1,13 +1,14 @@
-package example.com;
+package com.example;
 
-import example.com.dto.CreateMovie;
-import example.com.dto.MovieResponse;
-import example.com.dto.UpdateMovie;
-import example.com.entity.Movie;
-import example.com.mapper.MovieMapper;
+import com.example.dto.CreateMovie;
+import com.example.dto.MovieResponse;
+import com.example.dto.UpdateMovie;
+import com.example.entity.Movie;
+import com.example.mapper.MovieMapper;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -40,8 +41,10 @@ public class MovieResource {
     private EntityManager entityManager;
 
     @GET
+    @Path("many")
     @Produces(MediaType.APPLICATION_JSON)
     public List<MovieResponse> getMovies() {
+        log.info("Getting all movies");
         return repository.findAll()
                 .map(MovieResponse::new)
                 .toList();
@@ -58,7 +61,7 @@ public class MovieResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createNewMovie(CreateMovie movie) {
+    public Response createNewMovie(@Valid CreateMovie movie) {
         if (movie == null) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("Book cannot be null").build();
@@ -112,15 +115,12 @@ public class MovieResource {
 //        return new MovieResponse(1, "Gladiator II", 130, "Action");
 //    }
 //
-//    @GET
-//    @Path("many")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Movies manyMovies () {
-//        List<MovieResponse> movies = new ArrayList<>();
-//        movies.add(new MovieResponse("Gladiator II", 130));
-//        movies.add(new MovieResponse("Forest Gump", 120));
-//        return new Movies(movies, 2);
-//    }
-//
-//    public record Movies (List<MovieResponse> Values, int TotalMovies) {}
+    @GET
+    @Path("many")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Movie> manyMovies () {
+        return repository.findAll().toList();
+    }
+
+    public record Movies (List<MovieResponse> Values, int TotalMovies) {}
 }

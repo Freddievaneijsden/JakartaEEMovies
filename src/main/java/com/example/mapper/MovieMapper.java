@@ -1,12 +1,14 @@
-package example.com.mapper;
+package com.example.mapper;
 
-import example.com.dto.CreateMovie;
-import example.com.dto.MovieResponse;
-import example.com.entity.Movie;
+import com.example.dto.CreateMovie;
+import com.example.dto.MovieResponse;
+import com.example.entity.Movie;
 
 public class MovieMapper {
 
     public static MovieResponse map (Movie movie) {
+        if( null == movie)
+            return null;
         return new MovieResponse(movie.getMovieId(), movie.getMovieTitle(), movie.getMoviePrice(), movie.getMovieGenre());
     }
 
