@@ -1,10 +1,11 @@
-package com.example;
+package com.example.presentation;
 
+import com.example.persistence.MovieRepository;
+import com.example.business.MovieService;
 import com.example.dto.CreateMovie;
 import com.example.dto.MovieResponse;
 import com.example.dto.UpdateMovie;
 import com.example.entity.Movie;
-import com.example.mapper.MovieMapper;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -26,10 +27,12 @@ public class MovieResource {
 
     //Alla metoder mot movies i denna klass
     private MovieRepository repository;
+    private MovieService movieService;
 
     @Inject
-    public MovieResource(MovieRepository repository) {
+    public MovieResource(MovieRepository repository, MovieService movieService) {
         this.repository = repository;
+        this.movieService = movieService;
     }
 
     public MovieResource() {
@@ -41,22 +44,17 @@ public class MovieResource {
     private EntityManager entityManager;
 
     @GET
-    @Path("many")
     @Produces(MediaType.APPLICATION_JSON)
     public List<MovieResponse> getMovies() {
-        log.info("Getting all movies");
-        return repository.findAll()
-                .map(MovieResponse::new)
-                .toList();
+        return movieService.getAllMovies();
     }
 
+    //Viktigt att testa samtliga annotationer
     @GET
     @Path("{id}") //Kopplar id med variabel
     @Produces(MediaType.APPLICATION_JSON)
     public Movie getOneMovie(@PathParam("id") Long id) {
-        return repository.findById(id).orElseThrow(
-                () -> new NotFoundException("Movie not found")
-        );
+        return movieService.getMovieById(id);
     }
 
     @POST
@@ -66,8 +64,8 @@ public class MovieResource {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("Book cannot be null").build();
         }
-        Movie newMovie = MovieMapper.map(movie);
-        newMovie = repository.insert(newMovie);
+
+        Movie newMovie = movieService.createMovie(movie);
 
         return Response
                 .status(Response.Status.CREATED)
@@ -94,33 +92,23 @@ public class MovieResource {
     @Path("{id}") //Kopplar id med variabel
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateMovieFieldByField(UpdateMovie movie, @PathParam("id") Long id) {
-        var oldMovie = repository.findById(id).orElseThrow(
-                () -> new NotFoundException("Movie not found")
-        );
-        if (movie.title() != null) oldMovie.setMovieTitle(movie.title());
-        if (movie.price() != null) oldMovie.setMoviePrice(movie.price());
-        if (movie.genre() != null) oldMovie.setMovieGenre(movie.genre());
-        oldMovie.setMovieTitle(movie.title());
-        oldMovie.setMoviePrice(movie.price());
-        oldMovie.setMovieGenre(movie.genre());
-        repository.update(oldMovie);
-
+        movieService.updateMovieField(movie, id);
         return Response.noContent().build();
     }
 
 
-//    @GET
+    //    @GET
 //    @Produces(MediaType.APPLICATION_JSON)
 //    public MovieResponse movie () {
 //        return new MovieResponse(1, "Gladiator II", 130, "Action");
 //    }
 //
-    @GET
-    @Path("many")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Movie> manyMovies () {
-        return repository.findAll().toList();
-    }
-
-    public record Movies (List<MovieResponse> Values, int TotalMovies) {}
+//    @GET
+//    @Path("many")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public List<Movie> manyMovies () {
+//        return repository.findAll().toList();
+//    }
+//
+//    public record Movies (List<MovieResponse> Values, int TotalMovies) {}
 }

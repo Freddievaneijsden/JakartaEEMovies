@@ -2,7 +2,6 @@ package com.example.dto;
 
 import com.example.entity.Movie;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.ws.rs.core.Response;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

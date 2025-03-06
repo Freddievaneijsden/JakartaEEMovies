@@ -1,4 +1,4 @@
-package com.example;
+package com.example.persistence;
 
 import com.example.entity.Movie;
 import jakarta.data.repository.CrudRepository;
