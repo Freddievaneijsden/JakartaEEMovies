@@ -2,6 +2,9 @@ package com.example.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
@@ -17,15 +20,18 @@ public class Movie {
     @NotBlank(message = "Movie title required")
     private String movieTitle;
 
+    @Positive (message = "Duration must be greater than zero")
     @Column (name = "movie_duration")
     private Integer movieDuration;
 
     @Column (name = "movie_director")
     private String movieDirector;
 
+    @Past(message = "Release date must be in the past")
     @Column (name = "movie_releaseDate")
     private LocalDate movieReleaseDate;
 
+    @Size(max = 500)
     @Column (name = "movie_description")
     private String movieDescription;
 
