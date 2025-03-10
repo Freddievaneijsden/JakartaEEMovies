@@ -76,7 +76,7 @@ public class MovieResource {
     @PUT
     @Path("{id}") //Kopplar id med variabel
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateMovie(UpdateMovie movie, @PathParam("id") Long id) {
+    public Response updateMovie(@Valid UpdateMovie movie, @PathParam("id") Long id) {
         var oldMovie = repository.findById(id).orElseThrow(
                 () -> new NotFoundException("Movie not found")
         );
@@ -93,7 +93,7 @@ public class MovieResource {
     @PATCH
     @Path("{id}") //Kopplar id med variabel
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateMovieFieldByField(UpdateMovie movie, @PathParam("id") Long id) {
+    public Response updateMovieFieldByField(@Valid UpdateMovie movie, @PathParam("id") Long id) {
         movieService.updateMovieField(movie, id);
         return Response.noContent().build();
     }
