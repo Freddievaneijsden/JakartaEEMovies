@@ -66,6 +66,7 @@ public class MovieResource {
         }
 
         Movie newMovie = movieService.createMovie(movie);
+        log.info("Creating new movie: " + newMovie);
 
         return Response
                 .status(Response.Status.CREATED)
@@ -86,6 +87,8 @@ public class MovieResource {
         oldMovie.setMovieReleaseDate(movie.releaseDate());
         oldMovie.setMovieDescription(movie.description());
         repository.update(oldMovie);
+        log.info("Updating movie: " + movie);
+
 
         return Response.noContent().build();
     }
@@ -95,6 +98,7 @@ public class MovieResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateMovieFieldByField(@Valid UpdateMovie movie, @PathParam("id") Long id) {
         movieService.updateMovieField(movie, id);
+        log.info("Updating movie: " + movie);
         return Response.noContent().build();
     }
 }
