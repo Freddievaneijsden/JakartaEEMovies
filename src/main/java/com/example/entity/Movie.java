@@ -3,13 +3,11 @@ package com.example.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
-import java.math.BigDecimal;
-
 @Entity
 public class Movie {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "movie_id", nullable = false)
     private Long movieId;
 
@@ -17,11 +15,11 @@ public class Movie {
     @NotBlank(message = "Movie title required")
     private String movieTitle;
 
-    @Column (name = "movie_price")
-    private BigDecimal moviePrice;
+    @Column (name = "movie_duration")
+    private Integer movieDuration;
 
-    @Column (name = "movie_genre")
-    private String movieGenre;
+    @Column (name = "movie_director")
+    private String movieDirector;
 
     public Long getMovieId() {
         return movieId;
@@ -39,19 +37,19 @@ public class Movie {
         this.movieTitle = movieTitle;
     }
 
-    public BigDecimal getMoviePrice() {
-        return moviePrice;
+    public Integer getMovieDuration() {
+        return movieDuration;
     }
 
-    public void setMoviePrice(BigDecimal moviePrice) {
-        this.moviePrice = moviePrice;
+    public void setMovieDuration(Integer movieDuration) {
+        this.movieDuration = movieDuration;
     }
 
-    public String getMovieGenre() {
-        return movieGenre;
+    public String getMovieDirector() {
+        return movieDirector;
     }
 
-    public void setMovieGenre(String movieGenre) {
-        this.movieGenre = movieGenre;
+    public void setMovieDirector(String movieDirector) {
+        this.movieDirector = movieDirector;
     }
 }

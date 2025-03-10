@@ -9,15 +9,15 @@ public class MovieMapper {
     public static MovieResponse map (Movie movie) {
         if( null == movie)
             return null;
-        return new MovieResponse(movie.getMovieId(), movie.getMovieTitle(), movie.getMoviePrice(), movie.getMovieGenre());
+        return new MovieResponse(movie.getMovieId(), movie.getMovieTitle(), movie.getMovieDuration(), movie.getMovieDirector());
     }
 
     public static Movie map(CreateMovie movie) {
         if (movie == null) return null;
         Movie newMovie = new Movie();
         newMovie.setMovieTitle(movie.title());
-        newMovie.setMoviePrice(movie.price());
-        newMovie.setMovieGenre(movie.genre());
+        newMovie.setMovieDuration(movie.duration());
+        newMovie.setMovieDirector(movie.director());
         return newMovie;
     }
 

@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 
 public record CreateMovie (
         @NotNull @NotBlank String title,
-        String genre,
-        @Positive BigDecimal price){
+        String director,
+        @Positive Integer duration)
+
+{
 }

@@ -49,11 +49,11 @@ public class MovieService {
                 () -> new NotFoundException("Movie not found")
         );
         if (movie.title() != null) oldMovie.setMovieTitle(movie.title());
-        if (movie.price() != null) oldMovie.setMoviePrice(movie.price());
-        if (movie.genre() != null) oldMovie.setMovieGenre(movie.genre());
+        if (movie.duration() != null) oldMovie.setMovieDuration(movie.duration());
+        if (movie.director() != null) oldMovie.setMovieDirector(movie.director());
         oldMovie.setMovieTitle(movie.title());
-        oldMovie.setMoviePrice(movie.price());
-        oldMovie.setMovieGenre(movie.genre());
+        oldMovie.setMovieDuration(movie.duration());
+        oldMovie.setMovieDirector(movie.director());
         repository.update(oldMovie);
     }
 }

@@ -81,8 +81,8 @@ public class MovieResource {
                 () -> new NotFoundException("Movie not found")
         );
         oldMovie.setMovieTitle(movie.title());
-        oldMovie.setMoviePrice(movie.price());
-        oldMovie.setMovieGenre(movie.genre());
+        oldMovie.setMovieDuration(movie.duration());
+        oldMovie.setMovieDirector(movie.director());
         repository.update(oldMovie);
 
         return Response.noContent().build();
