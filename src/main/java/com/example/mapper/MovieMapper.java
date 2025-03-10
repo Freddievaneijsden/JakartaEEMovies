@@ -9,7 +9,7 @@ public class MovieMapper {
     public static MovieResponse map (Movie movie) {
         if( null == movie)
             return null;
-        return new MovieResponse(movie.getMovieId(), movie.getMovieTitle(), movie.getMovieDuration(), movie.getMovieDirector());
+        return new MovieResponse(movie.getMovieId(), movie.getMovieTitle(), movie.getMovieDuration(), movie.getMovieDirector(), movie.getMovieReleaseDate(), movie.getMovieDescription());
     }
 
     public static Movie map(CreateMovie movie) {
@@ -18,6 +18,8 @@ public class MovieMapper {
         newMovie.setMovieTitle(movie.title());
         newMovie.setMovieDuration(movie.duration());
         newMovie.setMovieDirector(movie.director());
+        newMovie.setMovieReleaseDate(movie.releaseDate());
+        newMovie.setMovieDescription(movie.description());
         return newMovie;
     }
 

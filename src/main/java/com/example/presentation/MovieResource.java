@@ -83,6 +83,8 @@ public class MovieResource {
         oldMovie.setMovieTitle(movie.title());
         oldMovie.setMovieDuration(movie.duration());
         oldMovie.setMovieDirector(movie.director());
+        oldMovie.setMovieReleaseDate(movie.releaseDate());
+        oldMovie.setMovieDescription(movie.description());
         repository.update(oldMovie);
 
         return Response.noContent().build();
@@ -95,20 +97,4 @@ public class MovieResource {
         movieService.updateMovieField(movie, id);
         return Response.noContent().build();
     }
-
-
-    //    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public MovieResponse movie () {
-//        return new MovieResponse(1, "Gladiator II", 130, "Action");
-//    }
-//
-//    @GET
-//    @Path("many")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public List<Movie> manyMovies () {
-//        return repository.findAll().toList();
-//    }
-//
-//    public record Movies (List<MovieResponse> Values, int TotalMovies) {}
 }

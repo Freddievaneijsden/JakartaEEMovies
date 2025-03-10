@@ -3,6 +3,8 @@ package com.example.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.time.LocalDate;
+
 @Entity
 public class Movie {
 
@@ -20,6 +22,12 @@ public class Movie {
 
     @Column (name = "movie_director")
     private String movieDirector;
+
+    @Column (name = "movie_releaseDate")
+    private LocalDate movieReleaseDate;
+
+    @Column (name = "movie_description")
+    private String movieDescription;
 
     public Long getMovieId() {
         return movieId;
@@ -51,5 +59,21 @@ public class Movie {
 
     public void setMovieDirector(String movieDirector) {
         this.movieDirector = movieDirector;
+    }
+
+    public LocalDate getMovieReleaseDate() {
+        return movieReleaseDate;
+    }
+
+    public void setMovieReleaseDate(LocalDate movieReleaseDate) {
+        this.movieReleaseDate = movieReleaseDate;
+    }
+
+    public String getMovieDescription() {
+        return movieDescription;
+    }
+
+    public void setMovieDescription(String movieDescription) {
+        this.movieDescription = movieDescription;
     }
 }
