@@ -6,6 +6,7 @@ import com.example.dto.MovieResponse;
 import com.example.dto.UpdateMovie;
 import com.example.entity.Movie;
 import com.example.mapper.MovieMapper;
+import com.example.rules.ValidMovie;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
