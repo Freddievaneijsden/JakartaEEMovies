@@ -61,4 +61,10 @@ public class MovieService {
         oldMovie.setMovieDescription(movie.description());
         repository.update(oldMovie);
     }
+
+    public Movie getMovieByTitle (String title) {
+        return repository.findByMovieTitle(title).orElseThrow(
+                () -> new NotFoundException("Movie not found")
+        );
+    }
 }
