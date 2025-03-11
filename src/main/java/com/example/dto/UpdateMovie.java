@@ -1,6 +1,17 @@
 package com.example.dto;
 
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDate;
 
-public record UpdateMovie (String title, Integer duration, String director, LocalDate releaseDate, String description) {
+public record UpdateMovie (
+        @NotNull @NotBlank
+        String title,
+        @Positive
+        Integer duration,
+        String director,
+        @Past
+        LocalDate releaseDate,
+        @Size (max = 500)
+        String description) {
 }
