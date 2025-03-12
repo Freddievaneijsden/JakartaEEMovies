@@ -6,7 +6,6 @@ import com.example.dto.MovieResponse;
 import com.example.dto.UpdateMovie;
 import com.example.entity.Movie;
 import com.example.mapper.MovieMapper;
-import com.example.rules.ValidMovie;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
@@ -62,9 +61,17 @@ public class MovieService {
         repository.update(oldMovie);
     }
 
-    public Movie getMovieByTitle (String title) {
-        return repository.findByMovieTitle(title).orElseThrow(
-                () -> new NotFoundException("Movie not found")
-        );
+//    public Movie getMovieByTitle (String title) {
+//        return repository.findByTitle(title).orElseThrow(
+//                () -> new NotFoundException("Movie not found")
+//        );
+//    }
+
+    public List<MovieResponse> getMoviesByDirector (String movieDirector) {
+        return repository.findByMovieDirector(movieDirector.trim())
+                .stream()
+                .map(MovieResponse::new)
+                .filter(Objects::nonNull)
+                .toList();
     }
 }

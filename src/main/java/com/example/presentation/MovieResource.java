@@ -26,12 +26,10 @@ import java.util.List;
 public class MovieResource {
 
     //Alla metoder mot movies i denna klass
-    private MovieRepository repository;
     private MovieService movieService;
 
     @Inject
-    public MovieResource(MovieRepository repository, MovieService movieService) {
-        this.repository = repository;
+    public MovieResource(MovieService movieService) {
         this.movieService = movieService;
     }
 
@@ -45,8 +43,14 @@ public class MovieResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<MovieResponse> getMovies() {
-        return movieService.getAllMovies();
+    public List<MovieResponse> getMovies(@QueryParam("director") String director) {
+        if (director != null && !director.isEmpty()) {
+            //api/movies?director=
+            return movieService.getMoviesByDirector(director);
+        }
+        else {
+            return movieService.getAllMovies();
+        }
     }
 
     //Viktigt att testa samtliga annotationer
@@ -74,24 +78,24 @@ public class MovieResource {
                 .build();
     }
 
-    @PUT
-    @Path("{id}") //Kopplar id med variabel
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateMovie(@Valid UpdateMovie movie, @PathParam("id") Long id) {
-        var oldMovie = repository.findById(id).orElseThrow(
-                () -> new NotFoundException("Movie not found")
-        );
-        oldMovie.setMovieTitle(movie.title());
-        oldMovie.setMovieDuration(movie.duration());
-        oldMovie.setMovieDirector(movie.director());
-        oldMovie.setMovieReleaseDate(movie.releaseDate());
-        oldMovie.setMovieDescription(movie.description());
-        repository.update(oldMovie);
-        log.info("Updating movie: " + movie);
-
-
-        return Response.noContent().build();
-    }
+//    @PUT
+//    @Path("{id}") //Kopplar id med variabel
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public Response updateMovie(@Valid UpdateMovie movie, @PathParam("id") Long id) {
+//        var oldMovie = repository.findById(id).orElseThrow(
+//                () -> new NotFoundException("Movie not found")
+//        );
+//        oldMovie.setMovieTitle(movie.title());
+//        oldMovie.setMovieDuration(movie.duration());
+//        oldMovie.setMovieDirector(movie.director());
+//        oldMovie.setMovieReleaseDate(movie.releaseDate());
+//        oldMovie.setMovieDescription(movie.description());
+//        repository.update(oldMovie);
+//        log.info("Updating movie: " + movie);
+//
+//
+//        return Response.noContent().build();
+//    }
 
     @PATCH
     @Path("{id}") //Kopplar id med variabel
@@ -101,4 +105,12 @@ public class MovieResource {
         log.info("Updating movie: " + movie);
         return Response.noContent().build();
     }
+
+//    @GET
+//    @Path("by-title")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Movie getMovieByTitle(@QueryParam("title") String title) {
+//        return movieService.getMovieByTitle(title);
+//    }
+
 }
