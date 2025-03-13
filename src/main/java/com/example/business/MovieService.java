@@ -33,8 +33,10 @@ public class MovieService {
                 .toList();
     }
 
-    public Movie getMovieById(Long id) {
-        return repository.findById(id).orElseThrow(
+    public MovieResponse getMovieById(Long id) {
+        return repository.findById(id)
+                .map(MovieResponse::new)
+                .orElseThrow(
                 () -> new NotFoundException("Movie not found")
         );
     }

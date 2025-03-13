@@ -60,7 +60,7 @@ public class MovieResource {
     @GET
     @Path("{id}") //Kopplar id med variabel
     @Produces(MediaType.APPLICATION_JSON)
-    public Movie getOneMovie(@PathParam("id") Long id) {
+    public MovieResponse getOneMovie(@PathParam("id") Long id) {
         return movieService.getMovieById(id);
     }
 
