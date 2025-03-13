@@ -109,11 +109,11 @@ public class MovieResource {
         return Response.noContent().build();
     }
 
-//    @GET
-//    @Path("by-title")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Movie getMovieByTitle(@QueryParam("title") String title) {
-//        return movieService.getMovieByTitle(title);
-//    }
-
+    ///movies/by-title?title={title}
+    @GET
+    @Path("by-title")
+    @Produces(MediaType.APPLICATION_JSON)
+    public MovieResponse getMovieByTitle(@QueryParam("title") String title) {
+        return movieService.getMovieByTitle(title);
+    }
 }

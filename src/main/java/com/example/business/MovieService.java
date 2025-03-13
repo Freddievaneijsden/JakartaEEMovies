@@ -23,7 +23,8 @@ public class MovieService {
         this.repository = repository;
     }
 
-    public MovieService(){}
+    public MovieService() {
+    }
 
     public List<MovieResponse> getAllMovies() {
         return repository.findAll()
@@ -32,7 +33,7 @@ public class MovieService {
                 .toList();
     }
 
-   public Movie getMovieById(Long id) {
+    public Movie getMovieById(Long id) {
         return repository.findById(id).orElseThrow(
                 () -> new NotFoundException("Movie not found")
         );
@@ -61,13 +62,7 @@ public class MovieService {
         repository.update(oldMovie);
     }
 
-//    public Movie getMovieByTitle (String title) {
-//        return repository.findByTitle(title).orElseThrow(
-//                () -> new NotFoundException("Movie not found")
-//        );
-//    }
-
-    public List<MovieResponse> getMoviesByDirector (String movieDirector) {
+    public List<MovieResponse> getMoviesByDirector(String movieDirector) {
         return repository.findByMovieDirector(movieDirector.trim())
                 .stream()
                 .map(MovieResponse::new)
@@ -75,12 +70,20 @@ public class MovieService {
                 .toList();
     }
 
-    public List<MovieResponse> getMoviesWithDurationGreaterThan (Integer movieDuration) {
+    public List<MovieResponse> getMoviesWithDurationGreaterThan(Integer movieDuration) {
         return repository.findByMovieDurationGreaterThan(movieDuration)
                 .stream()
                 .map(MovieResponse::new)
                 .filter(Objects::nonNull)
                 .toList();
+    }
+
+    public MovieResponse getMovieByTitle(String movieTitle) {
+        return repository.findByMovieTitle(movieTitle)
+                .map(MovieResponse::new)
+                .orElseThrow(
+                        () -> new NotFoundException("Movie not found")
+                );
     }
 
 }
