@@ -1,5 +1,6 @@
 package com.example.business;
 
+import com.example.exceptions.NotFound;
 import com.example.persistence.MovieRepository;
 import com.example.dto.CreateMovie;
 import com.example.dto.MovieResponse;
@@ -37,7 +38,7 @@ public class MovieService {
         return repository.findById(id)
                 .map(MovieResponse::new)
                 .orElseThrow(
-                () -> new NotFoundException("Movie with id " + id + " not found")
+                () -> new NotFound("Movie with id " + id + " not found")
         );
     }
 
@@ -49,7 +50,7 @@ public class MovieService {
 
     public void updateMovieField(UpdateMovie movie, Long id) {
         var oldMovie = repository.findById(id).orElseThrow(
-                () -> new NotFoundException("Movie with id " + id + " not found")
+                () -> new NotFound("Movie with id " + id + " not found")
         );
         if (movie.title() != null) oldMovie.setMovieTitle(movie.title());
         if (movie.duration() != null) oldMovie.setMovieDuration(movie.duration());
@@ -84,7 +85,7 @@ public class MovieService {
         return repository.findByMovieTitle(movieTitle)
                 .map(MovieResponse::new)
                 .orElseThrow(
-                        () -> new NotFoundException("Movie with title " + movieTitle + " not found")
+                        () -> new NotFound("Movie with title " + movieTitle + " not found")
                 );
     }
 
