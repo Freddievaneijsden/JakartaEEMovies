@@ -1,5 +1,6 @@
 package com.example.business;
 
+import com.example.exceptions.BadRequest;
 import com.example.exceptions.NotFound;
 import com.example.persistence.MovieRepository;
 import com.example.dto.CreateMovie;
@@ -9,7 +10,6 @@ import com.example.entity.Movie;
 import com.example.mapper.MovieMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +35,7 @@ public class MovieService {
     }
 
     public MovieResponse getMovieById(Long id) {
+        if (id == null) throw new BadRequest("Id cannot be null");
         return repository.findById(id)
                 .map(MovieResponse::new)
                 .orElseThrow(
@@ -43,6 +44,7 @@ public class MovieService {
     }
 
     public Movie createMovie(CreateMovie movie) {
+        if (movie == null) throw new BadRequest("Movie cannot be null");
         Movie newMovie = MovieMapper.map(movie);
         newMovie = repository.insert(newMovie);
         return newMovie;
@@ -66,6 +68,7 @@ public class MovieService {
     }
 
     public List<MovieResponse> getMoviesByDirector(String movieDirector) {
+        if (movieDirector == null) throw new BadRequest("Director cannot be null");
         return repository.findByMovieDirector(movieDirector.trim())
                 .stream()
                 .map(MovieResponse::new)
@@ -74,6 +77,7 @@ public class MovieService {
     }
 
     public List<MovieResponse> getMoviesWithDurationGreaterThan(Integer movieDuration) {
+        if (movieDuration == null) throw new BadRequest("Duration cannot be null");
         return repository.findByMovieDurationGreaterThan(movieDuration)
                 .stream()
                 .map(MovieResponse::new)
@@ -82,6 +86,7 @@ public class MovieService {
     }
 
     public MovieResponse getMovieByTitle(String movieTitle) {
+        if (movieTitle == null) throw new BadRequest("Title cannot be null");
         return repository.findByMovieTitle(movieTitle)
                 .map(MovieResponse::new)
                 .orElseThrow(

@@ -1,5 +1,6 @@
 package com.example.presentation;
 
+import com.example.exceptions.BadRequest;
 import com.example.persistence.MovieRepository;
 import com.example.business.MovieService;
 import com.example.dto.CreateMovie;
@@ -61,6 +62,7 @@ public class MovieResource {
     @Path("{id}") //Kopplar id med variabel
     @Produces(MediaType.APPLICATION_JSON)
     public MovieResponse getOneMovie(@PathParam("id") Long id) {
+        if (id == null) throw new BadRequest("Id cannot be null");
         return movieService.getMovieById(id);
     }
 
