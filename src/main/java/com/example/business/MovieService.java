@@ -37,7 +37,7 @@ public class MovieService {
         return repository.findById(id)
                 .map(MovieResponse::new)
                 .orElseThrow(
-                () -> new NotFoundException("Movie not found")
+                () -> new NotFoundException("Movie with id " + id + " not found")
         );
     }
 
@@ -49,7 +49,7 @@ public class MovieService {
 
     public void updateMovieField(UpdateMovie movie, Long id) {
         var oldMovie = repository.findById(id).orElseThrow(
-                () -> new NotFoundException("Movie not found")
+                () -> new NotFoundException("Movie with id " + id + " not found")
         );
         if (movie.title() != null) oldMovie.setMovieTitle(movie.title());
         if (movie.duration() != null) oldMovie.setMovieDuration(movie.duration());
@@ -84,7 +84,7 @@ public class MovieService {
         return repository.findByMovieTitle(movieTitle)
                 .map(MovieResponse::new)
                 .orElseThrow(
-                        () -> new NotFoundException("Movie not found")
+                        () -> new NotFoundException("Movie with title " + movieTitle + " not found")
                 );
     }
 
