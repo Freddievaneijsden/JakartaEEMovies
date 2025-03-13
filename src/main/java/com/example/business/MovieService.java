@@ -74,4 +74,13 @@ public class MovieService {
                 .filter(Objects::nonNull)
                 .toList();
     }
+
+    public List<MovieResponse> getMoviesWithDurationGreaterThan (Integer movieDuration) {
+        return repository.findByMovieDurationGreaterThan(movieDuration)
+                .stream()
+                .map(MovieResponse::new)
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
 }

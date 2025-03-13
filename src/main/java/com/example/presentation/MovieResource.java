@@ -43,10 +43,13 @@ public class MovieResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<MovieResponse> getMovies(@QueryParam("director") String director) {
+    public List<MovieResponse> getMovies(@QueryParam("director") String director, @QueryParam("duration") Integer duration) {
         if (director != null && !director.isEmpty()) {
             //api/movies?director=
             return movieService.getMoviesByDirector(director);
+        }
+        else if (duration != null) {
+            return movieService.getMoviesWithDurationGreaterThan(duration);
         }
         else {
             return movieService.getAllMovies();
