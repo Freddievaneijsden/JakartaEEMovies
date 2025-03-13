@@ -31,7 +31,7 @@ public class MovieService {
 
     public List<MovieResponse> getAllMovies() {
         return repository.findAll()
-                .map(MovieResponse::new)
+                .map(MovieResponse::map)
                 .filter(Objects::nonNull)
                 .toList();
     }
@@ -39,7 +39,7 @@ public class MovieService {
     public MovieResponse getMovieById(@Positive Long id) {
         if (id == null) throw new BadRequest("Id cannot be null");
         return repository.findById(id)
-                .map(MovieResponse::new)
+                .map(MovieResponse::map)
                 .orElseThrow(
                 () -> new NotFound("Movie with id " + id + " not found")
         );
@@ -74,7 +74,7 @@ public class MovieService {
         if (movieDirector == null) throw new BadRequest("Director cannot be null");
         return repository.findByMovieDirector(movieDirector.trim())
                 .stream()
-                .map(MovieResponse::new)
+                .map(MovieResponse::map)
                 .filter(Objects::nonNull)
                 .toList();
     }
@@ -83,7 +83,7 @@ public class MovieService {
         if (movieDuration == null) throw new BadRequest("Duration cannot be null");
         return repository.findByMovieDurationGreaterThan(movieDuration)
                 .stream()
-                .map(MovieResponse::new)
+                .map(MovieResponse::map)
                 .filter(Objects::nonNull)
                 .toList();
     }
@@ -91,7 +91,7 @@ public class MovieService {
     public MovieResponse getMovieByTitle(String movieTitle) {
         if (movieTitle == null) throw new BadRequest("Title cannot be null");
         return repository.findByMovieTitle(movieTitle)
-                .map(MovieResponse::new)
+                .map(MovieResponse::map)
                 .orElseThrow(
                         () -> new NotFound("Movie with title " + movieTitle + " not found")
                 );

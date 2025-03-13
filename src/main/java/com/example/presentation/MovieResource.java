@@ -104,7 +104,7 @@ public class MovieResource {
     @PATCH
     @Path("{id}") //Kopplar id med variabel
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateMovieFieldByField(@Valid UpdateMovie movie, @PathParam("id") @Positive @NotBlank Long id) {
+    public Response updateMovieFieldByField(@Valid UpdateMovie movie, @PathParam("id") @Positive Long id) {
         movieService.updateMovieField(movie, id);
         log.info("Updating movie: " + movie);
         return Response.noContent().build();
