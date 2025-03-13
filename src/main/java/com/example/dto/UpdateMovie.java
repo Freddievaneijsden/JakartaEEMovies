@@ -5,7 +5,7 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
 public record UpdateMovie (
-        @NotNull @NotBlank
+        @NotBlank
         String title,
         @Positive
         Integer duration,
