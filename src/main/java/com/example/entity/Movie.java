@@ -15,7 +15,7 @@ public class Movie {
     @Column(name = "movie_id", nullable = false)
     private Long movieId;
 
-    @Column(name = "movie_title")
+    @Column(name = "movie_title", unique = true)
     @NotBlank(message = "Movie title required")
     private String movieTitle;
 

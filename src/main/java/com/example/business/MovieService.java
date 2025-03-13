@@ -88,4 +88,8 @@ public class MovieService {
                 );
     }
 
+    public boolean isValidTitle(String movieTitle) {
+        return repository.findByMovieTitle(movieTitle).isEmpty();
+    }
+
 }
