@@ -43,8 +43,8 @@ public class MovieResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<MovieResponse> getMovies(@QueryParam("director") @NotBlank String director,
-                                         @QueryParam("duration")@NotBlank @Positive Integer duration) {
+    public List<MovieResponse> getMovies(@QueryParam("director") String director,
+                                         @QueryParam("duration") @Positive Integer duration) {
         if (director != null && !director.isEmpty()) {
             //api/movies?director=
             return movieService.getMoviesByDirector(director);
@@ -61,7 +61,7 @@ public class MovieResource {
     @GET
     @Path("{id}") //Kopplar id med variabel
     @Produces(MediaType.APPLICATION_JSON)
-    public MovieResponse getOneMovie(@PathParam("id") @Positive @NotBlank Long id) {
+    public MovieResponse getOneMovie(@PathParam("id") @Positive Long id) {
         if (id == null) throw new BadRequest("Id cannot be null");
         return movieService.getMovieById(id);
     }
