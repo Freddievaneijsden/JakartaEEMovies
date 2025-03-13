@@ -10,6 +10,8 @@ import com.example.entity.Movie;
 import com.example.mapper.MovieMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,7 +36,7 @@ public class MovieService {
                 .toList();
     }
 
-    public MovieResponse getMovieById(Long id) {
+    public MovieResponse getMovieById(@Positive Long id) {
         if (id == null) throw new BadRequest("Id cannot be null");
         return repository.findById(id)
                 .map(MovieResponse::new)
@@ -43,14 +45,15 @@ public class MovieService {
         );
     }
 
-    public Movie createMovie(CreateMovie movie) {
+    public Movie createMovie(@Valid CreateMovie movie) {
         if (movie == null) throw new BadRequest("Movie cannot be null");
         Movie newMovie = MovieMapper.map(movie);
         newMovie = repository.insert(newMovie);
         return newMovie;
     }
 
-    public void updateMovieField(UpdateMovie movie, Long id) {
+    public void updateMovieField(@Valid UpdateMovie movie, @Positive Long id) {
+        if (id == null) throw new BadRequest("Id cannot be null");
         var oldMovie = repository.findById(id).orElseThrow(
                 () -> new NotFound("Movie with id " + id + " not found")
         );
@@ -76,7 +79,7 @@ public class MovieService {
                 .toList();
     }
 
-    public List<MovieResponse> getMoviesWithDurationGreaterThan(Integer movieDuration) {
+    public List<MovieResponse> getMoviesWithDurationGreaterThan(@Positive Integer movieDuration) {
         if (movieDuration == null) throw new BadRequest("Duration cannot be null");
         return repository.findByMovieDurationGreaterThan(movieDuration)
                 .stream()
