@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -65,4 +66,17 @@ class MovieServiceTest {
 
         assertThat(actualResponses).containsExactlyElementsOf(expectedResponses);
     }
+
+    @Test
+    @DisplayName("GetMovieById should return Movie with given id")
+    void getMovieByIdShouldReturnMovieWithGivenId() {
+        when(repository.findById(1L)).thenReturn(Optional.of(movies.get(0)));
+
+        MovieResponse actualResponses = movieService.getMovieById(1L);
+
+        MovieResponse expectedResponses = MovieMapper.map(movies.get(0));
+
+        assertThat(actualResponses).isEqualTo(expectedResponses);
+    }
+
 }
