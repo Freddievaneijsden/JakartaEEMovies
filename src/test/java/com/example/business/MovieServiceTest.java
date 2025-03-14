@@ -2,6 +2,7 @@ package com.example.business;
 
 import com.example.dto.CreateMovie;
 import com.example.dto.MovieResponse;
+import com.example.dto.UpdateMovie;
 import com.example.entity.Movie;
 import com.example.mapper.MovieMapper;
 import com.example.persistence.MovieRepository;
@@ -9,17 +10,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -126,6 +128,30 @@ class MovieServiceTest {
                 .toList();
 
         assertThat(actualResponses).containsExactlyElementsOf(expectedResponses);
+    }
+
+    @Test
+    @DisplayName("updateMovieField should change field of Movie")
+    void updateMovieFieldShouldChangeFieldOfMovie() {
+
+        UpdateMovie updateMovie = new UpdateMovie(
+                "Updated Title",
+                null,
+                null,
+                null,
+                null
+        );
+
+        when(repository.findById(1L)).thenReturn(Optional.of(movies.get(0)));
+
+        movieService.updateMovieField(updateMovie, 1L);
+
+        ArgumentCaptor<Movie> movieCaptor = ArgumentCaptor.forClass(Movie.class);
+        verify(repository).update(movieCaptor.capture());
+
+        Movie updatedMovie = movieCaptor.getValue();
+
+        assertThat(updatedMovie.getMovieTitle()).isEqualTo("Updated Title");
     }
 
 }

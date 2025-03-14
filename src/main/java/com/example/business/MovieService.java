@@ -62,11 +62,6 @@ public class MovieService {
         if (movie.director() != null) oldMovie.setMovieDirector(movie.director());
         if (movie.releaseDate() != null) oldMovie.setMovieReleaseDate(movie.releaseDate());
         if (movie.description() != null) oldMovie.setMovieDescription(movie.description());
-        oldMovie.setMovieTitle(movie.title());
-        oldMovie.setMovieDuration(movie.duration());
-        oldMovie.setMovieDirector(movie.director());
-        oldMovie.setMovieReleaseDate(movie.releaseDate());
-        oldMovie.setMovieDescription(movie.description());
         repository.update(oldMovie);
     }
 
