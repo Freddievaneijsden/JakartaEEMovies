@@ -4,6 +4,7 @@ import com.example.dto.CreateMovie;
 import com.example.dto.MovieResponse;
 import com.example.dto.UpdateMovie;
 import com.example.entity.Movie;
+import com.example.exceptions.BadRequest;
 import com.example.mapper.MovieMapper;
 import com.example.persistence.MovieRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -131,7 +133,7 @@ class MovieServiceTest {
     }
 
     @Test
-    @DisplayName("updateMovieField should change field of Movie")
+    @DisplayName("UpdateMovieField should change field of Movie")
     void updateMovieFieldShouldChangeFieldOfMovie() {
         UpdateMovie updateMovie = new UpdateMovie(
                 "Updated Title",
@@ -154,7 +156,7 @@ class MovieServiceTest {
     }
 
     @Test
-    @DisplayName("getMoviesWithDurationGreaterThan should return movies with duration greater then given integer")
+    @DisplayName("GetMoviesWithDurationGreaterThan should return movies with duration greater then given integer")
     void getMoviesWithDurationGreaterThanShouldReturnMoviesWithDurationGreaterThenGivenInteger() {
         List<Movie> moviesWithDurationGreaterThan120 = movies.subList(1, 2);
 
@@ -170,7 +172,7 @@ class MovieServiceTest {
     }
 
     @Test
-    @DisplayName("getMovieByTitle should return Movie with given title")
+    @DisplayName("GetMovieByTitle should return Movie with given title")
     void getMovieByTitleShouldReturnMovieWithGivenTitle() {
         when(repository.findByMovieTitle("The Dark Knight")).thenReturn(Optional.of(movies.get(0)));
 
@@ -181,5 +183,28 @@ class MovieServiceTest {
         assertThat(actualResponses).isEqualTo(expectedResponses);
     }
 
+    @Test
+    @DisplayName("GetMovieByTitle should throw exception when title is null")
+    void getMovieByTitleShouldThrowExceptionWhenTitleIsNull() {
+        assertThrows(BadRequest.class, () -> movieService.getMovieByTitle(null));
+    }
+
+    @Test
+    @DisplayName("GetMoviesWithDurationGreaterThan should throw exception when duration is null")
+    void getMoviesWithDurationGreaterThanShouldThrowExceptionWhenDurationIsNull() {
+        assertThrows(BadRequest.class, () -> movieService.getMoviesWithDurationGreaterThan(null));
+    }
+
+    @Test
+    @DisplayName("GetMoviesByDirector should throw exception when director is null")
+    void getMoviesByDirectorShouldThrowExceptionWhenDirectorIsNull() {
+        assertThrows(BadRequest.class, () -> movieService.getMoviesByDirector(null));
+    }
+
+    @Test
+    @DisplayName("GetMovieById should throw exception when id is null")
+    void getMovieByIdShouldThrowExceptionWhenIdIsNull() {
+        assertThrows(BadRequest.class, () -> movieService.getMovieById(null));
+    }
 
 }
