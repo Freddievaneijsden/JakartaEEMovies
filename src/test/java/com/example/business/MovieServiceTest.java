@@ -133,7 +133,6 @@ class MovieServiceTest {
     @Test
     @DisplayName("updateMovieField should change field of Movie")
     void updateMovieFieldShouldChangeFieldOfMovie() {
-
         UpdateMovie updateMovie = new UpdateMovie(
                 "Updated Title",
                 null,
@@ -154,4 +153,19 @@ class MovieServiceTest {
         assertThat(updatedMovie.getMovieTitle()).isEqualTo("Updated Title");
     }
 
+    @Test
+    @DisplayName("getMoviesWithDurationGreaterThan should return movies with duration greater then given integer")
+    void getMoviesWithDurationGreaterThanShouldReturnMoviesWithDurationGreaterThenGivenInteger() {
+        List<Movie> moviesWithDurationGreaterThan120 = movies.subList(1, 2);
+
+        when(repository.findByMovieDurationGreaterThan(120)).thenReturn(moviesWithDurationGreaterThan120);
+
+        List<MovieResponse> actualResponses = movieService.getMoviesWithDurationGreaterThan(120);
+
+        List<MovieResponse> expectedResponses = moviesWithDurationGreaterThan120.stream()
+                .map(MovieMapper::map)
+                .toList();
+
+        assertThat(actualResponses).containsExactlyElementsOf(expectedResponses);
+    }
 }
