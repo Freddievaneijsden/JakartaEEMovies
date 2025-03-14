@@ -14,6 +14,7 @@ Movie management is a RESTful web service developed using Jakarta EE 11 preview.
     - **Titel**
     - **Director**
     - **Duration**
+    - **ID**
 
 ### 🛠️ Validation
 - Data validation using **Jakarta Bean Validation** for ensuring valid input.
@@ -30,20 +31,27 @@ Movie management is a RESTful web service developed using Jakarta EE 11 preview.
 ## Steps to Build and Run the Application
 
 ### 1. Clone the Repository
-git clone https://github.com/Freddievaneijsden/JakartaEEMovies.git
-
-cd JakartaEEMovies
+- git clone https://github.com/Freddievaneijsden/JakartaEEMovies.git
+- cd JakartaEEMovies
 
 ### 2. Build the Application with Maven
-Ensure Maven is installed on your machine.
-
-mvn clean package
+- Ensure Maven is installed on your machine.
+- mvn clean package
 
 ### 3. Ensure Docker is Running
-Make sure Docker is installed and running in the background.
+- Make sure Docker is installed and running in the background.
 
 ### 4. Start the Database and Server with
-docker-compose --profile production up
+- docker-compose --profile production up
 
 ## Accessing the Application
-The application will be accessible at http://localhost:8080.
+- The application will be accessible at http://localhost:8080.
+
+## Endpoints 
+- **Get all movies**: http://localhost:8080/api/movies
+- **Get movie by ID**: http://localhost:8080/api/movies/id
+- **Get movie by Title**: http://localhost:8080/api/movies/by-title?title=title
+- **Get movies by Director**: http://localhost:8080/api/movies?director=director
+- **Get movies by Duration greater than**: http://localhost:8080/api/movies?duration=duration
+- **Create new movie**: http://localhost:8080/api/movies
+- **Update movie properties**: http://localhost:8080/api/movies/id  
