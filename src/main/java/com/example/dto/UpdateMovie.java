@@ -1,7 +1,6 @@
 package com.example.dto;
 
 import jakarta.validation.constraints.*;
-
 import java.time.LocalDate;
 
 public record UpdateMovie (

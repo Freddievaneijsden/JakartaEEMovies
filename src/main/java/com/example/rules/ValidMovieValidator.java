@@ -5,7 +5,6 @@ import com.example.dto.CreateMovie;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import jakarta.ws.rs.NotFoundException;
 
 public class ValidMovieValidator implements ConstraintValidator<ValidMovie, CreateMovie> {
 

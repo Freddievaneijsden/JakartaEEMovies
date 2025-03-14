@@ -22,6 +22,4 @@ public class MovieMapper {
         newMovie.setMovieDescription(movie.description());
         return newMovie;
     }
-
-    //Man kan även göra en egen klass som mappar mellan objekt istället för att ha metoden i DTO
 }

@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface MovieRepository extends CrudRepository<Movie, Long> {
     //Grundläggande CRUD finns via CrudRepository
-    //Kan skriva egna om man följer regler för namngivning
+    //Kan skriva egna metoder om man följer regler för namngivning
 
     @Find
     List<Movie> findByMovieDirector(String movieDirector);

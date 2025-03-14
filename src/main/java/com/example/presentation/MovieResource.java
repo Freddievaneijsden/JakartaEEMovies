@@ -27,7 +27,6 @@ import java.util.List;
 @Log
 public class MovieResource {
 
-    //Alla metoder mot movies i denna klass
     private MovieService movieService;
 
     @Inject

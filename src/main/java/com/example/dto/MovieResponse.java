@@ -2,8 +2,6 @@ package com.example.dto;
 
 import com.example.entity.Movie;
 import jakarta.validation.constraints.*;
-
-import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
