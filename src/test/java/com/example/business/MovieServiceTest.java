@@ -168,4 +168,18 @@ class MovieServiceTest {
 
         assertThat(actualResponses).containsExactlyElementsOf(expectedResponses);
     }
+
+    @Test
+    @DisplayName("getMovieByTitle should return Movie with given title")
+    void getMovieByTitleShouldReturnMovieWithGivenTitle() {
+        when(repository.findByMovieTitle("The Dark Knight")).thenReturn(Optional.of(movies.get(0)));
+
+        MovieResponse actualResponses = movieService.getMovieByTitle("The Dark Knight");
+
+        MovieResponse expectedResponses = MovieMapper.map(movies.get(0));
+
+        assertThat(actualResponses).isEqualTo(expectedResponses);
+    }
+
+
 }
