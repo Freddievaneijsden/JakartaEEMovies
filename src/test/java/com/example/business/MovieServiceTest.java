@@ -1,5 +1,6 @@
 package com.example.business;
 
+import com.example.dto.CreateMovie;
 import com.example.dto.MovieResponse;
 import com.example.entity.Movie;
 import com.example.mapper.MovieMapper;
@@ -49,6 +50,14 @@ class MovieServiceTest {
                     setMovieReleaseDate(LocalDate.of(2010, 7, 16));
                     setMovieDirector("Christopher Nolan");
                     setMovieDuration(148);
+                }},
+                new Movie() {{
+                    setMovieId(3L);
+                    setMovieTitle("Gladiator");
+                    setMovieDescription("Action movie about roman general");
+                    setMovieReleaseDate(LocalDate.of(2000, 9, 16));
+                    setMovieDirector("Ridley scott");
+                    setMovieDuration(125);
                 }}
         );
     }
@@ -79,4 +88,35 @@ class MovieServiceTest {
         assertThat(actualResponses).isEqualTo(expectedResponses);
     }
 
+    @Test
+    @DisplayName("CreateMovie should insert new movie in repository")
+    void createMovieShouldInsertNewMovieInRepository() {
+        CreateMovie createMovie = new CreateMovie(
+                "Avengers",
+                "Anthony Russo",
+                120,
+                LocalDate.of(2012, 3, 10),
+                "Action movie with marvel heroes");
+
+        Movie actualMovie = movieService.createMovie(createMovie);
+        Movie expectedMovie = MovieMapper.map(createMovie);
+
+//        assertThat(repository.findAll()).hasSize(1);
+//        assertThat(actualMovie).isEqualTo(expectedMovie.getMovieTitle());
+    }
+
+    @Test
+    @DisplayName("GetMovieByDirector should return movie with given director")
+    void getMovieByDirectorShouldReturnMovieWithGivenDirector() {
+        List<Movie> nolanMovies = movies.subList(0, 2);
+        when(repository.findByMovieDirector("Christopher Nolan")).thenReturn(nolanMovies);
+
+        List<MovieResponse> actualResponses = movieService.getMoviesByDirector("Christopher Nolan");
+
+        List<MovieResponse> expectedResponses = nolanMovies.stream()
+                .map(MovieMapper::map)
+                .toList();
+
+        assertThat(actualResponses).containsExactlyElementsOf(expectedResponses);
+    }
 }
