@@ -11,9 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,11 +100,17 @@ class MovieServiceTest {
                 LocalDate.of(2012, 3, 10),
                 "Action movie with marvel heroes");
 
-        Movie actualMovie = movieService.createMovie(createMovie);
-        Movie expectedMovie = MovieMapper.map(createMovie);
+        Movie expectedMovie = new Movie();
+        expectedMovie.setMovieTitle("Avengers");
+        expectedMovie.setMovieDirector("Anthony Russo");
+        expectedMovie.setMovieDuration(120);
+        expectedMovie.setMovieReleaseDate(LocalDate.of(2012, 3, 10));
+        expectedMovie.setMovieDescription("Action movie with marvel heroes");
 
-//        assertThat(repository.findAll()).hasSize(1);
-//        assertThat(actualMovie).isEqualTo(expectedMovie.getMovieTitle());
+        when(repository.insert(Mockito.any(Movie.class))).thenReturn(expectedMovie);
+        Movie actualMovie = movieService.createMovie(createMovie);
+
+        assertThat(actualMovie).usingRecursiveComparison().isEqualTo(expectedMovie);
     }
 
     @Test
@@ -119,4 +127,5 @@ class MovieServiceTest {
 
         assertThat(actualResponses).containsExactlyElementsOf(expectedResponses);
     }
+
 }
