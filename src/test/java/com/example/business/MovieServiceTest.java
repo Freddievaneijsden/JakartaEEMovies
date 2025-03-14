@@ -5,7 +5,6 @@ import com.example.dto.MovieResponse;
 import com.example.dto.UpdateMovie;
 import com.example.entity.Movie;
 import com.example.exceptions.BadRequest;
-import com.example.mapper.MovieMapper;
 import com.example.persistence.MovieRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,10 +35,10 @@ class MovieServiceTest {
     private MovieService movieService;
 
     List<Movie> movies;
+    List<MovieResponse> movieResponses;
 
     @BeforeEach
     void setUp() {
-        // Creating some sample movies
         movies = List.of(
                 new Movie() {{
                     setMovieId(1L);
@@ -60,11 +59,17 @@ class MovieServiceTest {
                 new Movie() {{
                     setMovieId(3L);
                     setMovieTitle("Gladiator");
-                    setMovieDescription("Action movie about roman general");
+                    setMovieDescription("Action movie about a roman general");
                     setMovieReleaseDate(LocalDate.of(2000, 9, 16));
-                    setMovieDirector("Ridley scott");
+                    setMovieDirector("Ridley Scott");
                     setMovieDuration(125);
                 }}
+        );
+
+        movieResponses = List.of(
+                new MovieResponse(1L, "The Dark Knight", 120, "Christopher Nolan", LocalDate.of(2010, 3, 10), "Action movie that takes place in Gotham"),
+                new MovieResponse(2L, "Inception", 148, "Christopher Nolan", LocalDate.of(2010, 7, 16), "A mind-bending thriller about dreams"),
+                new MovieResponse(3L, "Gladiator", 125, "Ridley Scott", LocalDate.of(2000, 9, 16), "Action movie about a roman general")
         );
     }
 
@@ -75,9 +80,7 @@ class MovieServiceTest {
 
         List<MovieResponse> actualResponses = movieService.getAllMovies();
 
-        List<MovieResponse> expectedResponses = movies.stream()
-                .map(MovieMapper::map)
-                .toList();
+        List<MovieResponse> expectedResponses = movieResponses;
 
         assertThat(actualResponses).containsExactlyElementsOf(expectedResponses);
     }
@@ -89,7 +92,7 @@ class MovieServiceTest {
 
         MovieResponse actualResponses = movieService.getMovieById(1L);
 
-        MovieResponse expectedResponses = MovieMapper.map(movies.get(0));
+        MovieResponse expectedResponses = movieResponses.get(0);
 
         assertThat(actualResponses).isEqualTo(expectedResponses);
     }
@@ -121,15 +124,13 @@ class MovieServiceTest {
     @DisplayName("GetMovieByDirector should return movie with given director")
     void getMovieByDirectorShouldReturnMovieWithGivenDirector() {
         List<Movie> nolanMovies = movies.subList(0, 2);
+        List<MovieResponse> nolanMovieResponses = movieResponses.subList(0, 2);
+
         when(repository.findByMovieDirector("Christopher Nolan")).thenReturn(nolanMovies);
 
         List<MovieResponse> actualResponses = movieService.getMoviesByDirector("Christopher Nolan");
 
-        List<MovieResponse> expectedResponses = nolanMovies.stream()
-                .map(MovieMapper::map)
-                .toList();
-
-        assertThat(actualResponses).containsExactlyElementsOf(expectedResponses);
+        assertThat(actualResponses).containsExactlyElementsOf(nolanMovieResponses);
     }
 
     @Test
@@ -159,16 +160,13 @@ class MovieServiceTest {
     @DisplayName("GetMoviesWithDurationGreaterThan should return movies with duration greater then given integer")
     void getMoviesWithDurationGreaterThanShouldReturnMoviesWithDurationGreaterThenGivenInteger() {
         List<Movie> moviesWithDurationGreaterThan120 = movies.subList(1, 2);
+        List<MovieResponse> moviesResponsesWithDurationGreaterThan120 = movieResponses.subList(1, 2);
 
         when(repository.findByMovieDurationGreaterThan(120)).thenReturn(moviesWithDurationGreaterThan120);
 
         List<MovieResponse> actualResponses = movieService.getMoviesWithDurationGreaterThan(120);
 
-        List<MovieResponse> expectedResponses = moviesWithDurationGreaterThan120.stream()
-                .map(MovieMapper::map)
-                .toList();
-
-        assertThat(actualResponses).containsExactlyElementsOf(expectedResponses);
+        assertThat(actualResponses).containsExactlyElementsOf(moviesResponsesWithDurationGreaterThan120);
     }
 
     @Test
@@ -176,11 +174,11 @@ class MovieServiceTest {
     void getMovieByTitleShouldReturnMovieWithGivenTitle() {
         when(repository.findByMovieTitle("The Dark Knight")).thenReturn(Optional.of(movies.get(0)));
 
-        MovieResponse actualResponses = movieService.getMovieByTitle("The Dark Knight");
+        MovieResponse actualResponse = movieService.getMovieByTitle("The Dark Knight");
 
-        MovieResponse expectedResponses = MovieMapper.map(movies.get(0));
+        MovieResponse expectedResponse = movieResponses.get(0);
 
-        assertThat(actualResponses).isEqualTo(expectedResponses);
+        assertThat(actualResponse).isEqualTo(expectedResponse);
     }
 
     @Test

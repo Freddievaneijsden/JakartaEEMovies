@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * DTO for {@link com.example.entity.Movie}
  */
 public record MovieResponse(
-        @NotNull @Negative
+        @NotNull @Positive
         Long id,
         @NotBlank(message = "Movie title required")
         String title,
